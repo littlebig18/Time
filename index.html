@@ -59,7 +59,7 @@
 <body>
     <div class="container">
      <h1>Hi Sarika your </h1>
-        <h2>Logout Time </h2>
+        <h3>Enter Login Time </h3>
         <div class="time-input">
             <select id="hours">
                 <!-- Options for hours -->
@@ -84,8 +84,9 @@
         </div>
         <button onclick="calculateTime()">Show Logout Time</button>
         <div id="result">Result will be shown here</div>
+         <marque> <h2>Nowfa is a vazha</h2> </marque>
+
     </div>
-<div><h2>Nowfa is a vazha </h2></div>
 
     <script>
         function calculateTime() {
@@ -111,7 +112,7 @@
             const options = { hour: '2-digit', minute: '2-digit', hour12: true };
             const formattedTime = new Intl.DateTimeFormat('en-US', options).format(date);
 
-            document.getElementById('result').textContent = `You can go hoem at: ${formattedTime}`;
+            document.getElementById('result').textContent = `You can go home at: ${formattedTime}  :)`;
         }
 
         document.addEventListener('DOMContentLoaded', () => {
