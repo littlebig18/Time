@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12-Hour Time Picker</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #f0f0f0;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        .time-input {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .time-input select {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin: 0 5px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>12-Hour Time Picker</h1>
+        <div class="time-input">
+            <select id="hours">
+                <!-- Options for hours -->
+                <script>
+                    for (let i = 1; i <= 12; i++) {
+                        document.write(`<option value="${i}">${i}</option>`);
+                    }
+                </script>
+            </select>
+            <select id="minutes">
+                <!-- Options for minutes -->
+                <script>
+                    for (let i = 0; i < 60; i += 5) {
+                        document.write(`<option value="${i}">${i.toString().padStart(2, '0')}</option>`);
+                    }
+                </script>
+            </select>
+            <select id="ampm">
+                <option value="AM">AM</option>
+                <option value="PM">PM</option>
+            </select>
+        </div>
+        <button onclick="calculateTime()">Show Time + 8hr 30m</button>
+        <div id="result">Result will be shown here</div>
+    </div>
+
+    <script>
+        function calculateTime() {
+            const hours = parseInt(document.getElementById('hours').value);
+            const minutes = parseInt(document.getElementById('minutes').value);
+            const ampm = document.getElementById('ampm').value;
+
+            let hour24 = hours;
+            if (ampm === 'PM' && hours !== 12) {
+                hour24 += 12;
+            }
+            if (ampm === 'AM' && hours === 12) {
+                hour24 = 0;
+            }
+
+            const date = new Date();
+            date.setHours(hour24);
+            date.setMinutes(minutes);
+
+            date.setHours(date.getHours() + 8);
+            date.setMinutes(date.getMinutes() + 30);
+
+            const options = { hour: '2-digit', minute: '2-digit', hour12: true };
+            const formattedTime = new Intl.DateTimeFormat('en-US', options).format(date);
+
+            document.getElementById('result').textContent = `New Time (+8hr 30m): ${formattedTime}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const now = new Date();
+            let hours = now.getHours();
+            const minutes = now.getMinutes();
+
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12; // Convert to 12-hour format
+
+            document.getElementById('hours').value = hours;
+            document.getElementById('minutes').value = minutes;
+            document.getElementById('ampm').value = ampm;
+        });
+    </script>
+</body>
+</html>
