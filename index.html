@@ -3,63 +3,257 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>12-Hour Time Picker</title>
+    <title>Logout Timer</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Poppins', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            background: #f0f0f0;
+            overflow: hidden;
+            background: linear-gradient(135deg, #74ebd5, #acb6e5);
+            transition: background 1s ease;
         }
+
         .container {
-            background: #fff;
+            background: rgba(255, 255, 255, 0.9);
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             text-align: center;
+            transition: transform 0.3s ease;
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+            z-index: 10;
         }
+
+        .container:hover {
+            transform: scale(1.05);
+        }
+
+        h1, h3 {
+            margin-bottom: 15px;
+        }
+
         h1 {
-            margin-bottom: 20px;
-            font-size: 24px;
+            font-size: 22px;
+            color: #333;
         }
+
+        h3 {
+            font-size: 16px;
+            color: #666;
+        }
+
         .time-input {
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
+
         .time-input select {
-            padding: 10px;
-            font-size: 16px;
+            padding: 8px;
+            font-size: 14px;
             border: 1px solid #ccc;
-            border-radius: 5px;
-            margin: 0 5px;
+            border-radius: 10px;
+            margin: 0 3px;
+            transition: border 0.3s ease, box-shadow 0.3s ease;
+            flex: 1;
+            max-width: 100px;
         }
+
+        .time-input select:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+        }
+
         button {
             padding: 10px 20px;
-            font-size: 16px;
+            font-size: 14px;
             color: #fff;
             background-color: #007bff;
             border: none;
-            border-radius: 5px;
+            border-radius: 10px;
             cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            width: 100%;
+            max-width: 200px;
         }
+
         button:hover {
             background-color: #0056b3;
+            transform: translateY(-3px);
         }
+
+        button:active {
+            transform: translateY(0);
+        }
+
         #result {
-            margin-top: 20px;
-            font-size: 20px;
+            margin-top: 15px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .scrolling-text {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            height: 30px;
+            margin-top: 15px;
+        }
+
+        .scrolling-text h2 {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-size: 14px;
+            line-height: 30px;
+            text-align: center;
+            color: red;
+            animation: scroll 10s linear infinite;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        .rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .rain div {
+            position: absolute;
+            bottom: 100%;
+            width: 2px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.5);
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(100vh);
+            }
+        }
+
+        .rain div:nth-child(odd) {
+            animation-duration: 1.5s;
+            animation-delay: -1s;
+        }
+
+        .rain div:nth-child(even) {
+            animation-duration: 2s;
+            animation-delay: -0.5s;
+        }
+
+        .night-sky {
+            background: linear-gradient(to bottom, #000428, #004e92);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            transition: opacity 1s ease;
+            opacity: 0;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: twinkle 2s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 20px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            h3 {
+                font-size: 14px;
+            }
+
+            button {
+                padding: 8px 15px;
+                font-size: 12px;
+            }
+
+            #result {
+                font-size: 16px;
+            }
+
+            .scrolling-text h2 {
+                font-size: 12px;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="night-sky" id="nightSky">
+        <script>
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.top = `${Math.random() * 100}vh`;
+                star.style.left = `${Math.random() * 100}vw`;
+                star.style.animationDelay = `${Math.random() * 2}s`;
+                star.style.animationDuration = `${Math.random() * 2 + 1}s`;
+                document.getElementById('nightSky').appendChild(star);
+            }
+        </script>
+    </div>
+
+    <div class="rain">
+        <script>
+            for (let i = 0; i < 100; i++) {
+                document.write('<div style="left: ' + Math.random() * 100 + '%; animation-duration: ' + (Math.random() * 1 + 1) + 's; animation-delay: ' + Math.random() * -5 + 's;"></div>');
+            }
+        </script>
+    </div>
+
     <div class="container">
-     <h1>Hi Sarika &#128526 </h1>
-        <h3>Enter Login Time </h3>
+        <h1>Hi Sarika &#128526;</h1>
+        <h3>Enter Login Time</h3>
         <div class="time-input">
             <select id="hours">
                 <!-- Options for hours -->
@@ -84,8 +278,9 @@
         </div>
         <button onclick="calculateTime()">Show Logout Time</button>
         <div id="result"></div>
-         <marquee> <h2  style="color:red;">Nowfa is a vazha &#128128</h2> </marquee>
-
+        <div class="scrolling-text">
+            <h2>Nowfa is a vazha &#128128;</h2>
+        </div>
     </div>
 
     <script>
@@ -113,6 +308,10 @@
             const formattedTime = new Intl.DateTimeFormat('en-US', options).format(date);
 
             document.getElementById('result').textContent = `You can go home at: ${formattedTime}  :)`;
+
+            // Change background to night sky with stars
+            document.body.style.background = 'linear-gradient(to bottom, #000428, #004e92)';
+            document.getElementById('nightSky').style.opacity = 1;
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -124,7 +323,7 @@
             hours = hours % 12 || 12; // Convert to 12-hour format
 
             document.getElementById('hours').value = hours;
-            document.getElementById('minutes').value = minutes;
+            document.getElementById('minutes').value = Math.floor(minutes / 5) * 5;
             document.getElementById('ampm').value = ampm;
         });
     </script>
